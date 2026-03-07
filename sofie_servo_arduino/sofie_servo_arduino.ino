@@ -35,8 +35,8 @@
 * These pulse limits are fine as definitions (#define) since they are true compile-time constants used to configure hardware, never used by the system after initial setup.
 * Adjust these values if your servos don't reach their full range of motion, or if they buzz/strain when reaching limits
 */
-#define SERVO_MIN 200
-#define SERVO_MAX 450
+#define SERVO_MAX 200
+#define SERVO_MIN 450
 #define SERVO_FREQ 50  // in Hz
 
 // The PCA9685 has an internal oscillator that drifts slightly between boards and changes in temperature, which will in turn affect the servo frequency randomly.
@@ -45,7 +45,7 @@
 #define OSC_FREQ 27000000UL
 
 // Timing constants for the sweep loop
-#define SWEEP_STEP_MS 15    // milliseconds between each pulse step
+#define SWEEP_STEP_MS 10    // milliseconds between each pulse step
 #define SWEEP_PAUSE_MS 500  // milliseconds to pause between sweep directions
 
 // ---------------------------------------------------------------------------
