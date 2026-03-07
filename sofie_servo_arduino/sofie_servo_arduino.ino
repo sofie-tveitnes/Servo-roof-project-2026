@@ -1,8 +1,8 @@
 /**
- * 64-Servo Controller using 4x Adafruit PCA9685 PWM Driver Boards
+ * 8-Servo Controller using 1x Adafruit PCA9685 PWM Driver Boards
  * 
- * Hardware: Arduino Uno + 4x Adafruit PCA9685 (I2C addresses 0x40–0x43)
- * Each board drives 16 servos, 64 total.
+ * Hardware: Arduino Uno + 1x Adafruit PCA9685 (I2C addresses 0x40–0x43)
+ * One board drives 8 servos.
  * 
  * Dependencies:
  *  - Adafruit PWM Servo Driver Library
