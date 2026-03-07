@@ -9,7 +9,7 @@
  *  - elapsedMillis by Paul Stoffregen
  *
  * Author: Sofie Tveitnes 
- * Date: 04.03.2026
+ * Date: 07.03.2026
  */
 
 #include <Wire.h>
