@@ -28,7 +28,7 @@
 * you can revisit this, but always prefer DRY (Don't Repeat Yourself) code.
 */
 #define SERVOS_PER_BOARD 16
-#define NUM_BOARDS_MAX 4
+#define NUM_BOARDS 4
 #define TOTAL_SERVOS (SERVOS_PER_BOARD * NUM_BOARDS)
 
 /**
