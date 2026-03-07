@@ -27,8 +27,8 @@
 * TOTAL_SERVOS is then derived automatically. If board counts ever differ,
 * you can revisit this, but always prefer DRY (Don't Repeat Yourself) code.
 */
-#define SERVOS_PER_BOARD 16
-#define NUM_BOARDS_MAX 4
+#define SERVOS_PER_BOARD 8
+#define NUM_BOARDS 1
 #define TOTAL_SERVOS (SERVOS_PER_BOARD * NUM_BOARDS)
 
 /**
@@ -60,10 +60,7 @@
 // The I2C addresses (0x40–0x43) are set physically on each board via
 // solder jumpers on the A0–A5 pads — make sure they match your hardware.
 Adafruit_PWMServoDriver boards[NUM_BOARDS] = {
-  Adafruit_PWMServoDriver(0x40),
-  Adafruit_PWMServoDriver(0x41),
-  Adafruit_PWMServoDriver(0x42),
-  Adafruit_PWMServoDriver(0x43)
+  Adafruit_PWMServoDriver(0x40)
 };
 
 // ---------------------------------------------------------------------------
