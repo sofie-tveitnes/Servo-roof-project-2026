@@ -1,14 +1,14 @@
 /**
- * 64-Servo Controller using 4x Adafruit PCA9685 PWM Driver Boards
+ * 80-Servo Controller using 5x Adafruit PCA9685 PWM Driver Boards
  * 
- * Hardware: Arduino Uno + 4x Adafruit PCA9685 (I2C addresses 0x40–0x43)
- * Each board drives 16 servos, 64 total.
+ * Hardware: Arduino Uno + 5x Adafruit PCA9685 (I2C addresses 0x40–0x43)
+ * Each board drives 16 servos, 80 total.
  * 
  * Dependencies:
  *  - Adafruit PWM Servo Driver Library
  *  - elapsedMillis by Paul Stoffregen
  *
- * Author: Sofie Tveitnes 
+ * Author: Sofie Tveitnes
  * Date: 07.03.2026
  */
 
@@ -26,14 +26,17 @@
 * Since they're all identical, we only need one constant (SERVOS_PER_BOARD).
 * TOTAL_SERVOS is then derived automatically. If board counts ever differ,
 * you can revisit this, but always prefer DRY (Don't Repeat Yourself) code.
+*CHANGED: I added one more board and changed elsewhere in the code as well so it accounts for 80 servos.
 */
 #define SERVOS_PER_BOARD 16
-#define NUM_BOARDS 4
+#define NUM_BOARDS 5
 #define TOTAL_SERVOS (SERVOS_PER_BOARD * NUM_BOARDS)
 
 /**
 * These pulse limits are fine as definitions (#define) since they are true compile-time constants used to configure hardware, never used by the system after initial setup.
 * Adjust these values if your servos don't reach their full range of motion, or if they buzz/strain when reaching limits
+* CHANGED: I switched the max and min because the "max"/highest motion point for the servo on the sculpture will be equvilant to the minimum pulse point (and the other way around).
+* and I want the loop to start and conclude on the lowest point.
 */
 #define SERVO_MAX 200
 #define SERVO_MIN 450
@@ -44,7 +47,9 @@
 // UL means unsigned long
 #define OSC_FREQ 27000000UL
 
-// Timing constants for the sweep loop
+/** Timing constants for the sweep loop
+*CHANGED: I changed the pulse step as I want it to be a bit faster
+*/
 #define SWEEP_STEP_MS 10    // milliseconds between each pulse step
 #define SWEEP_PAUSE_MS 500  // milliseconds to pause between sweep directions
 
@@ -63,8 +68,9 @@ Adafruit_PWMServoDriver boards[NUM_BOARDS] = {
   Adafruit_PWMServoDriver(0x40),
   Adafruit_PWMServoDriver(0x41),
   Adafruit_PWMServoDriver(0x42),
-  Adafruit_PWMServoDriver(0x43)
-};
+  Adafruit_PWMServoDriver(0x43),
+  Adafruit_PWMServoDriver(0x44) 
+  };
 
 // ---------------------------------------------------------------------------
 // Sweep state
