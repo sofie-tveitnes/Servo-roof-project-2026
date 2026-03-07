@@ -148,7 +148,7 @@ bool initBoards() {
  *   37 / 16 = 2  → boards[2] (the third board, address 0x42)
  *   37 % 16 = 5  → channel 5 on that board
  *
- * @param servoIndex  Which servo to move, 0 to 63
+ * @param servoIndex  Which servo to move, 0 to 79
  * @param pulselen    Pulse width, between SERVO_MIN and SERVO_MAX
  */
 void setServoPWM(uint8_t servoIndex, uint16_t pulselen) {
@@ -170,7 +170,7 @@ void setup() {
   Wire.setClock(I2C_CLOCK_FREQ);
 
   // NOTE: F() wraps string literals so they are stored in flash (program memory) instead of being copied into RAM at startup (the UNo doesnt have a lot of RAM..)
-  Serial.println(F("Initializing 64-servo controller..."));
+  Serial.println(F("Initializing 80-servo controller..."));
 
   if (!initBoards()) {
     Serial.println(F("ERROR: Board initialization failed. Check wiring and I2C addresses."));
