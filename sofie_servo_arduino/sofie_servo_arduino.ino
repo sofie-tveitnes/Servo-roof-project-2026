@@ -162,7 +162,7 @@ void setup() {
   Wire.setClock(I2C_CLOCK_FREQ);
 
   // NOTE: F() wraps string literals so they are stored in flash (program memory) instead of being copied into RAM at startup (the UNo doesnt have a lot of RAM..)
-  Serial.println(F("Initializing 64-servo controller..."));
+  Serial.println(F("Initializing 8-servo controller..."));
 
   if (!initBoards()) {
     Serial.println(F("ERROR: Board initialization failed. Check wiring and I2C addresses."));
