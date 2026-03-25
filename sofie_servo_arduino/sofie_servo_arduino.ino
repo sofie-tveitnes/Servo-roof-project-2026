@@ -38,8 +38,8 @@
 * CHANGED: I switched the max and min because the "max"/highest motion point for the servo on the sculpture will be equvilant to the minimum pulse point (and the other way around).
 * and I want the loop to start and conclude on the lowest point.
 */
-#define SERVO_MAX 200
-#define SERVO_MIN 450
+#define SERVO_MIN 200
+#define SERVO_MAX 450
 #define SERVO_FREQ 50  // in Hz
 
 // The PCA9685 has an internal oscillator that drifts slightly between boards and changes in temperature, which will in turn affect the servo frequency randomly.
