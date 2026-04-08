@@ -35,8 +35,6 @@
 /**
 * These pulse limits are fine as definitions (#define) since they are true compile-time constants used to configure hardware, never used by the system after initial setup.
 * Adjust these values if your servos don't reach their full range of motion, or if they buzz/strain when reaching limits
-* CHANGED: I switched the max and min because the "max"/highest motion point for the servo on the sculpture will be equvilant to the minimum pulse point (and the other way around).
-* and I want the loop to start and conclude on the lowest point.
 */
 #define SERVO_MIN 200
 #define SERVO_MAX 450
