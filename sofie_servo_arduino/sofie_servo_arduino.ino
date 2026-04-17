@@ -15,7 +15,7 @@ Adafruit_PWMServoDriver board5 = Adafruit_PWMServoDriver(0x44);
 #define SERVOMAX  450 // This is the 'maximum' pulse length count (out of 4096)
 #define SERVO_FREQ 50
 
-const int PAUSE_MS = 14; //duration between pulses
+const int PAUSE_MS = 10; //duration between pulses
 
 /*CHANGED: I added t
 */
@@ -50,6 +50,7 @@ void setup() {
 */
 
 /*CHANGED: Added the different boards in for testing if this makes sense
+//This works, now Ill try to fill one servo driver
 
 */
 void setAllServos(uint16_t value) {
@@ -57,15 +58,18 @@ void setAllServos(uint16_t value) {
     board1.setPWM(1, 0, value);
     board1.setPWM(2, 0, value);
     board1.setPWM(3, 0, value);
-
-    board2.setPWM(0, 0, value);
-   
-    board3.setPWM(0, 0, value);
-
-    board4.setPWM(0, 0, value);
-
-    board5.setPWM(0, 0, value);
-
+    board1.setPWM(4, 0, value);
+    board1.setPWM(5, 0, value);
+    board1.setPWM(6, 0, value);
+    board1.setPWM(7, 0, value);
+    board1.setPWM(8, 0, value);
+    board1.setPWM(9, 0, value);
+    board1.setPWM(10, 0, value);
+    board1.setPWM(11, 0, value);
+    board1.setPWM(12, 0, value);
+    board1.setPWM(13, 0, value);
+    board1.setPWM(14, 0, value);
+    board1.setPWM(15, 0, value);
     // add more servos here
 }
 
