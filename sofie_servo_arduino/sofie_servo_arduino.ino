@@ -1,7 +1,22 @@
+/**
+ * Reviced code for 80-Servo Controller using 5x Adafruit PCA9685 PWM Driver Boards
+ *Based on servo example from Servo Driver Library
+ * 
+ * Hardware: Arduino Uno + 5x Adafruit PCA9685 (I2C addresses 0x40–0x43)
+ * Each board drives 16 servos, 80 total.
+ * 
+ * Dependencies:
+ *  - Adafruit PWM Servo Driver Library
+  *  - Wire.h
+ 
+ * Author: Sofie Tveitnes
+ * Date: 16.04.2026
+ */
+
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-/*CHANGED: I added the codes for the 4 other boards, as the code signals this later I changed the
+/*CHANGED: I added the adresses for the 4 other boards
 */
 Adafruit_PWMServoDriver board1 = Adafruit_PWMServoDriver(0x40);
 Adafruit_PWMServoDriver board2 = Adafruit_PWMServoDriver(0x41);
@@ -11,17 +26,17 @@ Adafruit_PWMServoDriver board5 = Adafruit_PWMServoDriver(0x44);
 // called this way, it uses the default address 0x40
 
 
-#define SERVOMIN  200 // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  450 // This is the 'maximum' pulse length count (out of 4096)
+#define SERVOMIN  200 // This is the 'minimum' pulse length count - specific for this project (out of 4096)
+#define SERVOMAX  450 // This is the 'maximum' pulse length count - specific for this project(out of 4096)
 #define SERVO_FREQ 50
 
-const int PAUSE_MS = 10; //duration between pulses
+const int PAUSE_MS = 4; //duration between pulses
 
-/*CHANGED: I added t
+/*CHANGED: Added each board begin
 */
 void setup() {
   Serial.begin(9600);
-  Serial.println("4 servos board 1 and 1 servo on each board test");
+  Serial.println("16 servo test");
   board1.begin();
   board1.setOscillatorFrequency(27000000);
   board1.setPWMFreq(50);
@@ -42,11 +57,11 @@ void setup() {
   board5.setOscillatorFrequency(27000000);
   board5.setPWMFreq(50);
 
-  delay(10);
+  delay(5);
 
 }
 /*
-* this is a funtion that writes an @int value on servos 0 through 7.
+* this is a funtion that writes an @int value on servos 0 - 80
 */
 
 /*CHANGED: Added the different boards in for testing if this makes sense
@@ -70,6 +85,74 @@ void setAllServos(uint16_t value) {
     board1.setPWM(13, 0, value);
     board1.setPWM(14, 0, value);
     board1.setPWM(15, 0, value);
+
+    board2.setPWM(0, 0, value);
+    board2.setPWM(1, 0, value);
+    board2.setPWM(2, 0, value);
+    board2.setPWM(3, 0, value);
+    board2.setPWM(4, 0, value);
+    board2.setPWM(5, 0, value);
+    board2.setPWM(6, 0, value);
+    board2.setPWM(7, 0, value);
+    board2.setPWM(8, 0, value);
+    board2.setPWM(9, 0, value);
+    board2.setPWM(10, 0, value);
+    board2.setPWM(11, 0, value);
+    board2.setPWM(12, 0, value);
+    board2.setPWM(13, 0, value);
+    board2.setPWM(14, 0, value);
+    board2.setPWM(15, 0, value);
+
+    board3.setPWM(0, 0, value);
+    board3.setPWM(1, 0, value);
+    board3.setPWM(2, 0, value);
+    board3.setPWM(3, 0, value);
+    board3.setPWM(4, 0, value);
+    board3.setPWM(5, 0, value);
+    board3.setPWM(6, 0, value);
+    board3.setPWM(7, 0, value);
+    board3.setPWM(8, 0, value);
+    board3.setPWM(9, 0, value);
+    board3.setPWM(10, 0, value);
+    board3.setPWM(11, 0, value);
+    board3.setPWM(12, 0, value);
+    board3.setPWM(13, 0, value);
+    board3.setPWM(14, 0, value);
+    board3.setPWM(15, 0, value);
+
+    board4.setPWM(0, 0, value);
+    board4.setPWM(1, 0, value);
+    board4.setPWM(2, 0, value);
+    board4.setPWM(3, 0, value);
+    board4.setPWM(4, 0, value);
+    board4.setPWM(5, 0, value);
+    board4.setPWM(6, 0, value);
+    board4.setPWM(7, 0, value);
+    board4.setPWM(8, 0, value);
+    board4.setPWM(9, 0, value);
+    board4.setPWM(10, 0, value);
+    board4.setPWM(11, 0, value);
+    board4.setPWM(12, 0, value);
+    board4.setPWM(13, 0, value);
+    board4.setPWM(14, 0, value);
+    board4.setPWM(15, 0, value);
+
+    board5.setPWM(0, 0, value);
+    board5.setPWM(1, 0, value);
+    board5.setPWM(2, 0, value);
+    board5.setPWM(3, 0, value);
+    board5.setPWM(4, 0, value);
+    board5.setPWM(5, 0, value);
+    board5.setPWM(6, 0, value);
+    board5.setPWM(7, 0, value);
+    board5.setPWM(8, 0, value);
+    board5.setPWM(9, 0, value);
+    board5.setPWM(10, 0, value);
+    board5.setPWM(11, 0, value);
+    board5.setPWM(12, 0, value);
+    board5.setPWM(13, 0, value);
+    board5.setPWM(14, 0, value);
+    board5.setPWM(15, 0, value);
     // add more servos here
 }
 
