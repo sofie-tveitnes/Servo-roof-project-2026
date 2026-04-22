@@ -7,7 +7,8 @@
  * 
  * Dependencies:
  *  - Adafruit PWM Servo Driver Library
-  *  - Wire.h
+ *  - Wire.h
+ *  -Ellapsed Millis
  
  * Author: Sofie Tveitnes
  * Date: 16.04.2026
@@ -15,7 +16,7 @@
 
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-
+#include <elapsedMillis.h>
 /*CHANGED: I added the adresses for the 4 other boards
 */
 Adafruit_PWMServoDriver board1 = Adafruit_PWMServoDriver(0x40);
@@ -30,13 +31,25 @@ Adafruit_PWMServoDriver board5 = Adafruit_PWMServoDriver(0x44);
 #define SERVOMAX  450 // This is the 'maximum' pulse length count - specific for this project(out of 4096)
 #define SERVO_FREQ 50
 
-const int PAUSE_MS = 4; //duration between pulses
+elapsedMillis pwmTimer;                 // our timer
 
-/*CHANGED: Added each board begin
+const unsigned long PAUSE_VALUE = 10;   // pause value in ms, we can tune this one
+
+int pwm = 0;          // current PWM value sent to all servos
+int direction = 1;    // +1 going up, -1 going down
+
+
+/*CHANGED: Added each board begin,
+//CHANGED: added wire begin
 */
 void setup() {
+  Wire.begin();
+  Wire.setClock(400000L); 
+  
   Serial.begin(9600);
   Serial.println("16 servo test");
+
+
   board1.begin();
   board1.setOscillatorFrequency(27000000);
   board1.setPWMFreq(50);
@@ -68,8 +81,11 @@ void setup() {
 //This works, now Ill try to fill one servo driver
 
 */
-void setAllServos(uint16_t value) {
+
+void writePWM(uint16_t value) {
     board1.setPWM(0, 0, value);
+}
+/* REST OF SERVOS:
     board1.setPWM(1, 0, value);
     board1.setPWM(2, 0, value);
     board1.setPWM(3, 0, value);
@@ -154,9 +170,10 @@ void setAllServos(uint16_t value) {
     board5.setPWM(14, 0, value);
     board5.setPWM(15, 0, value);
     // add more servos here
-}
 
+*/
 
+/*
 void loop() {
     for (uint16_t pulseLength = SERVOMAX; pulseLength > SERVOMIN; pulseLength--) {
     setAllServos(pulseLength);
@@ -164,7 +181,9 @@ void loop() {
     //Serial.println(pulseLength);
     delay(PAUSE_MS);       
   }
+
   delay(500);
+
   for (uint16_t pulseLength = SERVOMIN; pulseLength < SERVOMAX; pulseLength++) {
     setAllServos(pulseLength);
     //Serial.print("current pulselength: ");
@@ -174,3 +193,18 @@ void loop() {
   }
   delay(500);
   }
+  */
+
+
+void loop() {
+  if (pwmTimer >= PAUSE_VALUE) {                    // has enough time passed since last step?
+    pwmTimer = 0;                                   // reset the timer for the next step
+    writePWM(pwm);                                  // send current value to all 80 servos
+    pwm += direction;                               // move one step up or down
+    if (pwm >= 255) { pwm = 255; direction = -1; }  // hit the top, now go down
+    if (pwm <= 0)   { pwm = 0;   direction = 1;  }  // hit the bottom, now go up
+  }
+}
+
+
+
