@@ -201,8 +201,8 @@ void loop() {
     pwmTimer = 0;                                   // reset the timer for the next step
     writePWM(pwm);                                  // send current value to all 80 servos
     pwm += direction;                               // move one step up or down
-    if (pwm >= 255) { pwm = 255; direction = -1; }  // hit the top, now go down
-    if (pwm <= 0)   { pwm = 0;   direction = 1;  }  // hit the bottom, now go up
+    if (pwm >= SERVOMAX) { pwm = SERVOMAX; direction = -1; }  // hit the top, now go down
+    if (pwm <= SERVOMIN)   { pwm = SERVOMIN;   direction = 1;  }  // hit the bottom, now go up
   }
 }
 
