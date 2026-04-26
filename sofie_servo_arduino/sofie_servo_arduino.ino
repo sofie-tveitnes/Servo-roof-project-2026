@@ -9,6 +9,13 @@
  *  - Adafruit PWM Servo Driver Library
  *  - Wire.h
  *  -Ellapsed Millis
+
+
+ Threads to look at for fix
+ https://forum.arduino.cc/t/errors-when-chaining-pca9685-servo-drivers/956121/13
+ https://forum.arduino.cc/t/pca9685-servo-control-on-esp32-cam/1337309
+ 
+
  
  * Author: Sofie Tveitnes
  * Date: 16.04.2026
@@ -19,11 +26,11 @@
 #include <elapsedMillis.h>
 /*CHANGED: I added the adresses for the 4 other boards
 */
-Adafruit_PWMServoDriver board1 = Adafruit_PWMServoDriver(0x40);
-Adafruit_PWMServoDriver board2 = Adafruit_PWMServoDriver(0x41);
-Adafruit_PWMServoDriver board3 = Adafruit_PWMServoDriver(0x42);
-Adafruit_PWMServoDriver board4 = Adafruit_PWMServoDriver(0x43);
-Adafruit_PWMServoDriver board5 = Adafruit_PWMServoDriver(0x44);
+Adafruit_PWMServoDriver board1 = Adafruit_PWMServoDriver(0x40, Wire);
+Adafruit_PWMServoDriver board2 = Adafruit_PWMServoDriver(0x41, Wire);
+Adafruit_PWMServoDriver board3 = Adafruit_PWMServoDriver(0x42, Wire);
+Adafruit_PWMServoDriver board4 = Adafruit_PWMServoDriver(0x43, Wire);
+Adafruit_PWMServoDriver board5 = Adafruit_PWMServoDriver(0x44, Wire);
 // called this way, it uses the default address 0x40
 
 
@@ -43,11 +50,11 @@ int direction = 1;    // +1 going up, -1 going down
 //CHANGED: added wire begin
 */
 void setup() {
-  Wire.begin();
-  Wire.setClock(400000L); 
-  
   Serial.begin(9600);
   Serial.println("16 servo test");
+
+  Wire.begin();
+  Wire.setClock(400000L); 
 
 
   board1.begin();
