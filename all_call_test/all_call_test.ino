@@ -9,8 +9,9 @@
 #define SERVO_MAX 450
 #define SERVO_FREQ 50
 #define OSC_FREQ 27000000UL
-#define SWEEP_STEP_MS 10
+#define SWEEP_STEP_MS 5
 #define SWEEP_PAUSE_MS 500
+#define RESOLUTION 5
 
 #define ALLCALL_ADDR 0x70  // PCA9685 default ALLCALLADR
 
@@ -32,8 +33,8 @@ uint16_t currentPulse = SERVO_MAX;
 bool sweepingDown = true;
 bool inPause = false;
 
-const int BAUD_RATE = 9600;
-const uint32_t I2C_CLOCK_FREQ = 400000;
+const int BAUD_RATE = 128000;
+const uint32_t I2C_CLOCK_FREQ = 100000;
 
 // ---------------------------------------------------------------------------
 // Board initialization
@@ -101,7 +102,7 @@ void loop() {
 
     if (sweepingDown) {
       if (currentPulse > SERVO_MIN) {
-        currentPulse--;
+        currentPulse-= RESOLUTION;
       } else {
         Serial.println(F("Reached MIN. Reversing..."));
         sweepingDown = false;
@@ -110,7 +111,7 @@ void loop() {
       }
     } else {
       if (currentPulse < SERVO_MAX) {
-        currentPulse++;
+        currentPulse+= RESOLUTION;
       } else {
         Serial.println(F("Reached MAX. Reversing..."));
         sweepingDown = true;
