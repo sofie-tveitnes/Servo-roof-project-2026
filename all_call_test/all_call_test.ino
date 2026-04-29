@@ -1,7 +1,9 @@
-#include <Wire.h>
-#include <Adafruit_PWMServoDriver.h>
-#include <elapsedMillis.h>
+//imports
+#include <Wire.h> //i2c com
+#include <Adafruit_PWMServoDriver.h> //servo driver
+#include <elapsedMillis.h> //convenient timer
 
+//definitions
 #define SERVOS_PER_BOARD 16
 #define NUM_BOARDS 5
 #define TOTAL_SERVOS (SERVOS_PER_BOARD * NUM_BOARDS)
@@ -9,10 +11,11 @@
 #define SERVO_MAX 450
 #define SERVO_FREQ 50
 #define OSC_FREQ 27000000UL
-#define SWEEP_STEP_MS 10
+#define SWEEP_STEP_MS 15
 #define SWEEP_PAUSE_MS 500
 #define ALLCALL_ADDR 0x70
 
+//servo drivers array with 5 boards
 Adafruit_PWMServoDriver boards[NUM_BOARDS] = {
   Adafruit_PWMServoDriver(0x40),
   Adafruit_PWMServoDriver(0x41),
@@ -21,6 +24,7 @@ Adafruit_PWMServoDriver boards[NUM_BOARDS] = {
   Adafruit_PWMServoDriver(0x44)
 };
 
+//variables definitions
 elapsedMillis sweepTimer;
 elapsedMillis pauseTimer;
 
@@ -34,7 +38,7 @@ const uint32_t I2C_CLOCK_FREQ = 400000;
 // Board initialization
 // ---------------------------------------------------------------------------
 void initBoards() {
-  for (uint8_t i = 0; i < NUM_BOARDS; i++) {
+  for (uint8_t i = 0; i < NUM_BOARDS; i++) { //for each board, perform a set of init functions
     boards[i].begin();
     boards[i].setOscillatorFrequency(OSC_FREQ);
     boards[i].setPWMFreq(SERVO_FREQ);
@@ -47,14 +51,15 @@ void initBoards() {
 
 // ---------------------------------------------------------------------------
 // ALLCALL broadcast
+// writes at once to all boards, specifies cndition to set a given PWM signal
 // ---------------------------------------------------------------------------
-void setAllServosPWM(uint16_t pulselen) {
+void setAllServosPWM(uint16_t pulseLength) {
   Wire.beginTransmission(ALLCALL_ADDR);
   Wire.write(0xFA);
   Wire.write(0x00);
   Wire.write(0x00);
-  Wire.write(pulselen & 0xFF);
-  Wire.write((pulselen >> 8) & 0x0F);
+  Wire.write(pulseLength & 0xFF);
+  Wire.write((pulseLength >> 8) & 0x0F);
   Wire.endTransmission();
 }
 
@@ -62,41 +67,44 @@ void setAllServosPWM(uint16_t pulselen) {
 // Setup
 // ---------------------------------------------------------------------------
 void setup() {
-  Wire.begin();
-  Wire.setClock(I2C_CLOCK_FREQ);
-  initBoards();
-  setAllServosPWM(currentPulse);
-  sweepTimer = 0;
+  Wire.begin(); //start i2c bus
+  Wire.setClock(I2C_CLOCK_FREQ); //set i2c bus freq
+  initBoards(); //init all boards
+  setAllServosPWM(currentPulse); //set all servos to max
+  sweepTimer = 0; //reset timer
 }
 
 // ---------------------------------------------------------------------------
 // Main loop
 // ---------------------------------------------------------------------------
 void loop() {
+  //if machine is in pause
   if (inPause) {
-    if (pauseTimer >= SWEEP_PAUSE_MS) {
-      inPause = false;
-      sweepTimer = 0;
+    if (pauseTimer >= SWEEP_PAUSE_MS) { //if pause timer is smaller than max pause time, stop pause
+      inPause = false; //not in pause anyore
+      sweepTimer = 0; //reset sweep timer
     }
     return;
   }
 
+  // if sweep timer bigger than desired "delay" duration
   if (sweepTimer >= SWEEP_STEP_MS) {
-    sweepTimer = 0;
-    setAllServosPWM(currentPulse);
+    sweepTimer = 0; //reset timer
+    setAllServosPWM(currentPulse); //write to servos current value
 
-    if (sweepingDown) {
-      if (currentPulse > SERVO_MIN) {
+    //conditions to sweep down
+    if (sweepingDown) { 
+      if (currentPulse > SERVO_MIN) { //if current pulse is bigger than minimum, go down
         currentPulse--;
-      } else {
-        sweepingDown = false;
-        inPause = true;
-        pauseTimer = 0;
+      } else {  //if not bigger than minimum, changes "machine state"
+        sweepingDown = false; //dont weep down anymore
+        inPause = true; //start pause
+        pauseTimer = 0; //reset pause timer
       }
-    } else {
-      if (currentPulse < SERVO_MAX) {
+    } else { //conditions to sweep up
+      if (currentPulse < SERVO_MAX) {  //if current pulse is smaller than maximum, go up
         currentPulse++;
-      } else {
+      } else { //if not smaller than maximum, changes "machine state"
         sweepingDown = true;
         inPause = true;
         pauseTimer = 0;
