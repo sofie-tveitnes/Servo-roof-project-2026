@@ -33,7 +33,7 @@ bool sweepingDown = true;
 bool inPause = false;
 
 uint32_t allCallErrorCount = 0;  // cumulative ALLCALL write failures
-uint32_t sweepStepCount = 0;     // total steps taken
+//uint32_t sweepStepCount = 0;     // total steps taken
 
 const int BAUD_RATE = 115200;    // bumped for Teensy — 9600 is needlessly slow
 const uint32_t I2C_CLOCK_FREQ = 400000;
@@ -128,7 +128,7 @@ bool initBoards() {
     // Explicitly set MODE1: oscillator on, ALLCALL enabled, auto-increment off
     Wire.beginTransmission(addr);
     Wire.write(0x00);   // MODE1
-    Wire.write(0x01);   // ALLCALL=1, SLEEP=0, AI=0
+    Wire.write(0x21);   // ALLCALL=1, SLEEP=0, AI=0
     uint8_t err = Wire.endTransmission();
     Serial.print(F("[I2C]   MODE1 write: "));
     Serial.println(i2cStatusStr(err));
@@ -207,8 +207,8 @@ void loop() {
     Serial.print(sweepingDown ? F("DOWN") : F("UP"));
     Serial.print(F("  paused="));
     Serial.print(inPause ? F("yes") : F("no"));
-    Serial.print(F("  steps="));
-    Serial.print(sweepStepCount);
+    //Serial.print(F("  steps="));
+    //Serial.print(sweepStepCount);
     Serial.print(F("  i2cErrors="));
     Serial.println(allCallErrorCount);
   }
@@ -226,7 +226,7 @@ void loop() {
 
   if (sweepTimer >= SWEEP_STEP_MS) {
     sweepTimer = 0;
-    sweepStepCount++;
+    //sweepStepCount++;
 
     setAllServosPWM(currentPulse);
 
