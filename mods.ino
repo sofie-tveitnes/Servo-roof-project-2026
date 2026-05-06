@@ -10,23 +10,23 @@ bool motorsActive = true;
 //  (2)
 // then copyp/paste this function above the main void loop()
 
-/*
- * Sweep logic now in its own method for clarity. Handles logic for both sweeping/pausing.
- */
+// Handles logic for both sweeping/pausing.
 void runMotors() {
-  if (inPause) {
-    if (pauseTimer >= SWEEP_PAUSE_MS) {
-      inPause = false;
-      sweepTimer = 0;
+  if (inPause) {                              // If we're in a pause
+    if (pauseTimer >= SWEEP_PAUSE_MS) {     // If the pause duration has elapsed
+      inPause = false;                      // Exit the pause
+      sweepTimer = 0;                       // Reset the sweep timer to start the next sweep immediately
     }
     return;
   }
+
+  //original sweep logic follows
 
   if (sweepTimer >= SWEEP_STEP_MS) {
     sweepTimer = 0;
     setAllServosPWM(currentPulse);
 
-    if (sweepingDown) {
+    if (sweepingDown) {                 
       if (currentPulse > SERVO_MIN) {
         currentPulse--;
       } else {
@@ -49,7 +49,7 @@ void runMotors() {
 //  (3)
 // finally, replace your existing loop() function with this one
 void loop() {
-  if (motorsActive) {
+  if (motorsActive) {                       // If motors are active, run the sweep logic
     if (cycleTimer >= ACTIVE_DURATION) {
       setAllServosPWM((SERVO_MIN + SERVO_MAX) / 2);
       motorsActive = false;
@@ -57,7 +57,7 @@ void loop() {
     } else {
       runMotors();
     }
-  } else {
+  } else {                    // If motors are idle, check if it's time to reactivate them  
     if (cycleTimer >= IDLE_DURATION) {
       motorsActive = true;
       cycleTimer = 0;
