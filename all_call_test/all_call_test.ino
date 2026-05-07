@@ -7,12 +7,12 @@
 #define SERVOS_PER_BOARD 16
 #define NUM_BOARDS 5
 #define TOTAL_SERVOS (SERVOS_PER_BOARD * NUM_BOARDS)
-#define SERVO_MIN 200
+#define SERVO_MIN 260
 #define SERVO_MAX 450
 #define SERVO_FREQ 50
 #define OSC_FREQ 27000000UL
-#define SWEEP_STEP_MS 15
-#define SWEEP_PAUSE_MS 500
+#define SWEEP_STEP_MS 8
+#define SWEEP_PAUSE_MS 800
 #define ALLCALL_ADDR 0x70
 
 //servo drivers array with 5 boards
