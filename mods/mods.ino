@@ -12,11 +12,11 @@
 #define SERVO_FREQ 50
 #define OSC_FREQ 27000000UL
 #define SWEEP_STEP_MS 8
-#define SWEEP_PAUSE_MIN_MS 500   // pause duration at bottom (SERVO_MIN)
-#define SWEEP_PAUSE_MAX_MS 1600   // pause duration at top (SERVO_MAX)
+#define SWEEP_PAUSE_MIN_MS 600   // pause duration at top (SERVO_MIN)
+#define SWEEP_PAUSE_MAX_MS 1600   // pause duration at bottom (SERVO_MAX)
 #define ALLCALL_ADDR 0x70
 
-#define ACTIVE_DURATION  120000UL  // 2 min in ms
+#define ACTIVE_DURATION  90000UL  // 1.5 min in ms
 #define IDLE_DURATION    180000UL  // 3 min in ms
 
 //servo drivers array with 5 boards
