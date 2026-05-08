@@ -61,13 +61,26 @@ void initBoards() {
 // ALLCALL broadcast
 // ---------------------------------------------------------------------------
 void setAllServosPWM(uint16_t pulseLength) {
-  Wire.beginTransmission(ALLCALL_ADDR);
-  Wire.write(0xFA);
-  Wire.write(0x00);
-  Wire.write(0x00);
-  Wire.write(pulseLength & 0xFF);
-  Wire.write((pulseLength >> 8) & 0x0F);
-  Wire.endTransmission();
+  Wire.beginTransmission(ALLCALL_ADDR);        // start I2C transaction to all boards simultaneously
+  Wire.write(0xFA);                            // target ALL_LED_ON_L register (broadcasts to all 16 channels)
+  Wire.write(0x00);                            // ALL_LED_ON low byte — pulse always starts at tick 0
+  Wire.write(0x00);                            // ALL_LED_ON high byte — no full-on flag, normal PWM mode
+  Wire.write(pulseLength & 0xFF);              // ALL_LED_OFF low byte — lower 8 bits of pulse length
+  Wire.write((pulseLength >> 8) & 0x0F);       // ALL_LED_OFF high byte — upper 4 bits of pulse length (12-bit value)
+  Wire.endTransmission();                      // send and release the I2C bus
+}
+
+/**
+ * Stop PWM signal to all servos while idle
+ */
+void detachAllServos() {
+  Wire.beginTransmission(ALLCALL_ADDR); // start I2C transaction to all boards simultaneously
+  Wire.write(0xFA);                     // target ALL_LED_ON_L register (broadcasts to all 16 channels)
+  Wire.write(0x00);                     // ALL_LED_ON low byte — no offset
+  Wire.write(0x10);                     // ALL_LED_ON high byte — bit 4 set = full-on flag, forces output low
+  Wire.write(0x00);                     // ALL_LED_OFF low byte — zero, ignored when full-on is set
+  Wire.write(0x00);                     // ALL_LED_OFF high byte — zero, ignored when full-on is set
+  Wire.endTransmission();               // send and release the I2C bus
 }
 
 // ---------------------------------------------------------------------------
@@ -113,7 +126,8 @@ void runMotors() {
         currentPulse++;
       } else {
         sweepingDown = true;
-        if (windingDown) {           // stops here at SERVO_MAX
+        if (windingDown) {
+          detachAllServos();         // cut PWM before going idle
           motorsActive = false;
           windingDown = false;
           cycleTimer = 0;
@@ -126,6 +140,8 @@ void runMotors() {
     }
   }
 }
+
+
 
 // ---------------------------------------------------------------------------
 // Main loop
@@ -150,5 +166,4 @@ void loop() {
       pauseTimer = 0;
     }
   }
-}
 }
