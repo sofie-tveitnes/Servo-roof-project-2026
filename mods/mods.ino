@@ -8,12 +8,12 @@
 #define NUM_BOARDS 5
 #define TOTAL_SERVOS (SERVOS_PER_BOARD * NUM_BOARDS)
 #define SERVO_MIN 290
-#define SERVO_MAX 460
+#define SERVO_MAX 450
 #define SERVO_FREQ 50
 #define OSC_FREQ 27000000UL
 #define SWEEP_STEP_MS 8
-#define SWEEP_PAUSE_MIN_MS 600   // pause duration at top (SERVO_MIN)
-#define SWEEP_PAUSE_MAX_MS 1600   // pause duration at bottom (SERVO_MAX)
+#define SWEEP_PAUSE_MIN_MS 800   // pause duration at top (SERVO_MIN)
+#define SWEEP_PAUSE_MAX_MS 1800   // pause duration at bottom (SERVO_MAX)
 #define ALLCALL_ADDR 0x70
 
 #define ACTIVE_DURATION  90000UL  // 1.5 min in ms
